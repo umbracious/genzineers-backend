@@ -1,11 +1,16 @@
-import { BeforeCreate, BeforeUpdate, Collection, Entity, EventArgs, OneToMany, PrimaryKey, Property } from "@mikro-orm/core";
-import { v4 as uuidv4 } from "uuid";
+import { BeforeCreate, BeforeUpdate, Collection, Entity, EntityRepositoryType, EventArgs, ManyToMany, OneToMany, Property } from "@mikro-orm/core";
 import { BaseEntity } from "../common/base.entity.js";
 import { Course } from "../course/course.entity.js";
 import { hash, verify } from "argon2";
+import { UserRepository } from "./user.repository.js";
 
-@Entity({ schema: "genzineers" })
+@Entity({ schema: "genzineers", repository: () => UserRepository })
 export class User extends BaseEntity {
+
+    [EntityRepositoryType]?: UserRepository;
+
+    @Property({ persist: false })
+    token?: string;
 
     @Property()
     fullName!: string;
@@ -19,7 +24,7 @@ export class User extends BaseEntity {
     @Property({ type: "text", lazy: true })
     bio = "";
 
-    @OneToMany({ mappedBy: "user" })
+    @ManyToMany({ mappedBy: "users" })
     courses = new Collection<Course>(this);
 
     constructor(fullName: string, email: string, password: string) {

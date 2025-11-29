@@ -12,8 +12,8 @@ export class Course extends BaseEntity {
     @Property()
     code!: string;
 
-    @ManyToOne()
-    user!: User;
+    @ManyToMany()
+    users = new Collection<User>(this);
 
     @ManyToMany()
     tags = new Collection<Tag>(this);

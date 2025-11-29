@@ -1,12 +1,13 @@
 import { EntityManager, EntityRepository, MikroORM, Options } from "@mikro-orm/postgresql";
 import { Course } from "./modules/course/course.entity.js";
 import { User } from "./modules/user/user.entity.js";
+import { UserRepository } from "./modules/user/user.repository.js";
 
 export interface Services {
     orm: MikroORM,
     em: EntityManager,
     course: EntityRepository<Course>;
-    user: EntityRepository<User>;
+    user: UserRepository;
 }
 
 let cache: Services;
