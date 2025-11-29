@@ -3,6 +3,8 @@ import fastify from "fastify";
 import { Course } from "./modules/course/course.entity.js";
 import { initORM } from "./db.js";
 
+// full setup is in the docker-compose.yml+.env and the file applying it is mikro-orm.config.ts
+
 export async function bootstrap(port = 8080, migrate = true) {
     const db = await initORM();
     const app = fastify();
