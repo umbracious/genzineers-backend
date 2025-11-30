@@ -3,6 +3,7 @@ import { BaseEntity } from "../common/base.entity.js";
 import { Course } from "../course/course.entity.js";
 import { hash, verify } from "argon2";
 import { UserRepository } from "./user.repository.js";
+import { Token } from "../token/token.entity.js";
 
 @Entity({ schema: "genzineers", repository: () => UserRepository })
 export class User extends BaseEntity {
@@ -23,6 +24,9 @@ export class User extends BaseEntity {
 
     @Property({ type: "text", lazy: true })
     bio = "";
+
+    @OneToMany({ mappedBy: "user" })
+    tokens = new Collection<Token>(this);
 
     @ManyToMany({ mappedBy: "users" })
     courses = new Collection<Course>(this);
