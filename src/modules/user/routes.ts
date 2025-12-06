@@ -36,16 +36,15 @@ export async function registerUserRoutes(app: FastifyInstance) {
       tokenHash: refreshTokenHash,
     });
 
-    user.token = app.jwt.sign({ id: user.id }, { expiresIn: "15m" });
+    user.token = await reply.jwtSign({ id: user.id }, { expiresIn: "15m" });
 
-    reply
-      .setCookie("refreshToken", _refreshToken, {
-        domain: "localhost",
-        path: "/",
-        secure: false,
-        httpOnly: true,
-        sameSite: "lax",
-      });
+    reply.setCookie("refreshToken", _refreshToken, {
+      domain: "localhost",
+      path: "/",
+      secure: false,
+      httpOnly: true,
+      sameSite: "lax",
+    });
 
     // console.log(reply.getHeaders());
 
@@ -54,28 +53,24 @@ export async function registerUserRoutes(app: FastifyInstance) {
     return user;
   });
 
-  app.post("/sign-in", async (request) => {
+  app.post("/sign-in", async (request, reply) => {
     const { email, password } = request.body as {
       email: string;
       password: string;
     };
     const user = await db.user.login(email, password);
-    user.token = app.jwt.sign({ id: user.id });
-
+    user.token = await reply.jwtSign({ id: user.id }, { expiresIn: "15m" });
+    // implement check to see remaining time on refreshToken and be given a new one if little time is left
     return user;
   });
 
   app.get("/cookies", async (request, reply) => {
     const user = getUserFromToken(request);
-
     const _refreshToken: string = request.cookies.refreshToken ?? "";
     const refreshToken = await db.token.findToken(user.id);
     if (await verify(refreshToken.tokenHash, _refreshToken)) {
-      const token = await reply.jwtSign(
-        { id: user.id },
-        { algorithm: "RS512", expiresIn: "1m" }
-      );
-      reply.send({ token });
+      const token = await reply.jwtSign({ id: user.id }, { expiresIn: "5m" });
+      return token;
     }
   });
 
@@ -90,5 +85,21 @@ export async function registerUserRoutes(app: FastifyInstance) {
 
     await db.em.flush();
     return user;
+  });
+
+  app.post("/enroll", async (request) => {
+    const user = getUserFromToken(request);
+    const courses = request.body as string[];
+    for (let i = 0; i < courses.length; i++) {
+      const course = await db.course.getCourseUserRef(courses[i]);
+      course.users.add(user);
+    }
+    await db.em.flush();
+  });
+
+  app.get("/enroll", async (request) => {
+    const user = getUserFromToken(request);
+    const courses = await db.course.getUserEnrolledCourses(user.id);
+    return courses;
   });
 }

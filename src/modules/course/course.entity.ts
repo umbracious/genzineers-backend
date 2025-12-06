@@ -1,10 +1,13 @@
-import { Collection, Entity, ManyToMany, ManyToOne, Property, Ref } from "@mikro-orm/core";
+import { Collection, Entity, EntityRepositoryType, ManyToMany, ManyToOne, Property, Ref } from "@mikro-orm/core";
 import { User } from "../user/user.entity.js";
 import { BaseEntity } from "../common/base.entity.js";
 import { Tag } from "./tag.entity.js";
+import { CourseRepository } from "./course.repository.js";
 
-@Entity({ schema: "genzineers"})
+@Entity({ schema: "genzineers", repository: () => CourseRepository})
 export class Course extends BaseEntity {
+
+    [EntityRepositoryType]?: CourseRepository;
 
     @Property()
     title!: string;

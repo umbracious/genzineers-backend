@@ -40,14 +40,14 @@ export async function bootstrap(migrate = true) {
         RequestContext.create(db.orm.em, done);
     });
 
-    // app.addHook("onRequest", async request => {
-    //     try {
-    //         const ret = await request.jwtVerify<{id: string}>();
-    //         request.user = await db.user.findOneOrFail(ret.id);
-    //     } catch (e) {
-    //         app.log.error(e);
-    //     }
-    // });
+    app.addHook("onRequest", async request => {
+        try {
+            const ret = await request.jwtVerify<{id: string}>();
+            request.user = await db.user.findOneOrFail(ret.id);
+        } catch (e) {
+            app.log.error(e);
+        }
+    });
 
     app.setErrorHandler((error, request, reply) => {
         if(error instanceof AuthError) 

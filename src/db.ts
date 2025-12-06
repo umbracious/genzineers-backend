@@ -4,11 +4,12 @@ import { User } from "./modules/user/user.entity.js";
 import { UserRepository } from "./modules/user/user.repository.js";
 import { TokenRepository } from "./modules/token/token.repository.js";
 import { Token } from "./modules/token/token.entity.js";
+import { CourseRepository } from "./modules/course/course.repository.js";
 
 export interface Services {
     orm: MikroORM,
     em: EntityManager,
-    course: EntityRepository<Course>;
+    course: CourseRepository;
     user: UserRepository;
     token: TokenRepository;
 }
