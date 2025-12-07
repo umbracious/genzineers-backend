@@ -30,10 +30,9 @@ export async function registerUserRoutes(app: FastifyInstance) {
       { id: user.id },
       { expiresIn: "7d" }
     );
-    const refreshTokenHash = await hash(_refreshToken);
     const refreshToken = db.token.create({
       user: ref(User, user.id),
-      tokenHash: refreshTokenHash,
+      tokenHash: _refreshToken,
     });
 
     user.token = await reply.jwtSign({ id: user.id }, { expiresIn: "15m" });
@@ -45,6 +44,8 @@ export async function registerUserRoutes(app: FastifyInstance) {
       httpOnly: true,
       sameSite: "lax",
     });
+
+    await db.em.flush();
 
     // console.log(reply.getHeaders());
 
@@ -60,18 +61,30 @@ export async function registerUserRoutes(app: FastifyInstance) {
     };
     const user = await db.user.login(email, password);
     user.token = await reply.jwtSign({ id: user.id }, { expiresIn: "15m" });
+
+    const refreshToken = await db.token.findToken(user.id);
+
+    reply.setCookie("refreshToken", refreshToken.tokenHash, {
+      domain: "localhost",
+      path: "/",
+      secure: false,
+      httpOnly: true,
+      sameSite: "lax",
+    });
     // implement check to see remaining time on refreshToken and be given a new one if little time is left
     return user;
   });
 
   app.get("/cookies", async (request, reply) => {
-    const user = getUserFromToken(request);
     const _refreshToken: string = request.cookies.refreshToken ?? "";
+    const user = app.jwt.decode<{ id: string }>(_refreshToken) || { id: "" };
+    if (user.id === "") return { error: "No token provided" };
     const refreshToken = await db.token.findToken(user.id);
-    if (await verify(refreshToken.tokenHash, _refreshToken)) {
-      const token = await reply.jwtSign({ id: user.id }, { expiresIn: "5m" });
+    if (refreshToken.tokenHash === _refreshToken) {
+      const token = await reply.jwtSign({ id: user.id }, { expiresIn: "15m" });
       return token;
     }
+    return { error: "Refresh token is invalid" };
   });
 
   app.get("/profile", async (request) => {

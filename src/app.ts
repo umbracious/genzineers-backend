@@ -21,7 +21,7 @@ export async function bootstrap(migrate = true) {
     app.register(fastifyCookie);
 
     app.addHook("onRequest", async request => {
-        console.log(`Origin: ${request.headers.origin}`);
+        console.log(`Origin: ${request.cookies.refreshToken}`);
     });
 
     await app.register(cors, {

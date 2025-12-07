@@ -3,7 +3,7 @@ import { BaseEntity } from '../common/base.entity.js';
 import { User } from '../user/user.entity.js';
 import { TokenRepository } from './token.repository.js';
 
-@Entity({ repository: () => TokenRepository })
+@Entity({ schema: "genzineers", repository: () => TokenRepository })
 export class Token extends BaseEntity {
 
   [EntityRepositoryType]?: TokenRepository;

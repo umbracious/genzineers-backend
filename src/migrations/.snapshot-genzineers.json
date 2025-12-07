@@ -384,7 +384,7 @@
         }
       },
       "name": "token",
-      "schema": "public",
+      "schema": "genzineers",
       "indexes": [
         {
           "keyName": "token_pkey",
@@ -404,7 +404,7 @@
           "columnNames": [
             "user_id"
           ],
-          "localTableName": "public.token",
+          "localTableName": "genzineers.token",
           "referencedColumnNames": [
             "id"
           ],
