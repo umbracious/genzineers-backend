@@ -15,6 +15,15 @@ export class Course extends BaseEntity {
     @Property()
     code!: string;
 
+    @Property()
+    image?: string;
+
+    @Property()
+    startDate?: Date;
+
+    @Property()
+    endDate?: Date;
+
     @ManyToMany()
     users = new Collection<User>(this);
 

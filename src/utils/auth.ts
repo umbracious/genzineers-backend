@@ -16,6 +16,7 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
+  experimental: { joins: true },
   baseURL: process.env.BETTER_AUTH_URL,
   socialProviders: {
     github: {
@@ -27,4 +28,15 @@ export const auth = betterAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     },
   },
+
+  user: {
+    additionalFields: {
+      ormUserId: {
+        type: "string",
+        required: false,
+        defaultValue: null,
+        input: false
+      },
+    }
+  }
 });
