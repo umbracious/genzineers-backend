@@ -2,8 +2,6 @@ import { EntityManager, EntityRepository, MikroORM, Options } from "@mikro-orm/p
 import { Course } from "./modules/course/course.entity.js";
 import { User } from "./modules/user/user.entity.js";
 import { UserRepository } from "./modules/user/user.repository.js";
-import { TokenRepository } from "./modules/token/token.repository.js";
-import { Token } from "./modules/token/token.entity.js";
 import { CourseRepository } from "./modules/course/course.repository.js";
 
 export interface Services {
@@ -11,7 +9,6 @@ export interface Services {
     em: EntityManager,
     course: CourseRepository;
     user: UserRepository;
-    token: TokenRepository;
 }
 
 let cache: Services;
@@ -26,6 +23,5 @@ export async function initORM(options?: Options): Promise<Services> {
         em: orm.em,
         course: orm.em.getRepository(Course),
         user: orm.em.getRepository(User),
-        token: orm.em.getRepository(Token)
     };
 }

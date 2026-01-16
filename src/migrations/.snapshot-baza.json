@@ -85,6 +85,26 @@
           "nullable": true,
           "length": 6,
           "mappedType": "datetime"
+        },
+        "link": {
+          "name": "link",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 255,
+          "mappedType": "string"
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 255,
+          "mappedType": "string"
         }
       },
       "name": "course",
@@ -277,6 +297,26 @@
       "name": "user",
       "schema": "genzineers",
       "indexes": [
+        {
+          "columnNames": [
+            "auth_user_id"
+          ],
+          "composite": false,
+          "keyName": "user_auth_user_id_index",
+          "constraint": false,
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "auth_user_id"
+          ],
+          "composite": false,
+          "keyName": "user_auth_user_id_unique",
+          "constraint": true,
+          "primary": false,
+          "unique": true
+        },
         {
           "keyName": "user_pkey",
           "columnNames": [

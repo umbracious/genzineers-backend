@@ -1,6 +1,5 @@
 import { FastifyInstance } from "fastify";
 import { initORM } from "../../db.js";
-import { getUserFromToken } from "../common/utils.js";
 
 export async function registerCourseRoutes(app: FastifyInstance) {
     const db = await initORM();

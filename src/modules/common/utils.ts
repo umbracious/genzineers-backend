@@ -1,11 +1,15 @@
 import { FastifyRequest } from "fastify";
-import { User } from "../user/user.entity.js";
+import { auth } from "../../utils/auth.js";
 
 export class AuthError extends Error {}
 
-export function getUserFromToken(req: FastifyRequest): User {
-    if(!req.user)
-        throw new Error("Please provide your token via Authorization header");
-
-    return req.user as User;
-}
+export const getCurrentUser = async (req: FastifyRequest) => {
+  const headers = new Headers();
+  if (req.headers.cookie) {
+    headers.set("cookie", req.headers.cookie);
+  }
+  const user = await auth.api.getSession({
+    headers,
+  });
+  return user;
+};
