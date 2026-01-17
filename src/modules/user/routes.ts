@@ -9,13 +9,16 @@ export async function registerUserRoutes(app: FastifyInstance) {
   const db = await initORM();
 
   app.post("/enroll", async (request) => {
-    const { courses, id } = request.body as { courses: string[]; id: string };
+    const { code, id } = request.body as { code: string; id: string };
     const user = await db.user.findOneOrFail({ authUserId: id });
-    for (let i = 0; i < courses.length; i++) {
-      const course = await db.course.getCourseUserRef(courses[i]);
-      course.users.add(user);
-    }
+    console.log(id);
+    console.log(code);
+    const course = await db.course.getCourseUserRef(code);
+    if (course.users.contains(user)) throw new Error("Duplicate");
+    course.users.add(user);
     await db.em.flush();
+    // prevent duplicate enrolling
+    return { status: 200, message: "success" };
   });
 
   app.get("/enroll", async (request) => {
@@ -31,7 +34,6 @@ export async function registerUserRoutes(app: FastifyInstance) {
       authUserId: id,
     });
     await db.em.flush();
-    
   });
 
   app.post("/test", async (request, reply) => {

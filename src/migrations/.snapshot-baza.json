@@ -1,7 +1,6 @@
 {
   "namespaces": [
-    "genzineers",
-    "public"
+    "genzineers"
   ],
   "name": "public",
   "tables": [
@@ -105,6 +104,16 @@
           "nullable": true,
           "length": 255,
           "mappedType": "string"
+        },
+        "tutor": {
+          "name": "tutor",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 255,
+          "mappedType": "string"
         }
       },
       "name": "course",
@@ -123,133 +132,6 @@
       ],
       "checks": [],
       "foreignKeys": {},
-      "nativeEnums": {}
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "uuid"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(20)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 20,
-          "mappedType": "string"
-        }
-      },
-      "name": "tag",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "tag_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "constraint": true,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {},
-      "nativeEnums": {}
-    },
-    {
-      "columns": {
-        "course_id": {
-          "name": "course_id",
-          "type": "uuid",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "uuid"
-        },
-        "tag_id": {
-          "name": "tag_id",
-          "type": "uuid",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "uuid"
-        }
-      },
-      "name": "course_tags",
-      "schema": "genzineers",
-      "indexes": [
-        {
-          "keyName": "course_tags_pkey",
-          "columnNames": [
-            "course_id",
-            "tag_id"
-          ],
-          "composite": true,
-          "constraint": true,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "course_tags_course_id_foreign": {
-          "constraintName": "course_tags_course_id_foreign",
-          "columnNames": [
-            "course_id"
-          ],
-          "localTableName": "genzineers.course_tags",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "genzineers.course",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        },
-        "course_tags_tag_id_foreign": {
-          "constraintName": "course_tags_tag_id_foreign",
-          "columnNames": [
-            "tag_id"
-          ],
-          "localTableName": "genzineers.course_tags",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.tag",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        }
-      },
       "nativeEnums": {}
     },
     {
@@ -330,128 +212,6 @@
       ],
       "checks": [],
       "foreignKeys": {},
-      "nativeEnums": {}
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "uuid"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "uuid",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "uuid"
-        },
-        "token_hash": {
-          "name": "token_hash",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 255,
-          "mappedType": "string"
-        },
-        "device": {
-          "name": "device",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 255,
-          "mappedType": "string"
-        },
-        "ip": {
-          "name": "ip",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 255,
-          "mappedType": "string"
-        },
-        "expires_at": {
-          "name": "expires_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "revoked": {
-          "name": "revoked",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "default": "false",
-          "mappedType": "boolean"
-        }
-      },
-      "name": "token",
-      "schema": "genzineers",
-      "indexes": [
-        {
-          "keyName": "token_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "constraint": true,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "token_user_id_foreign": {
-          "constraintName": "token_user_id_foreign",
-          "columnNames": [
-            "user_id"
-          ],
-          "localTableName": "genzineers.token",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "genzineers.user",
-          "updateRule": "cascade"
-        }
-      },
       "nativeEnums": {}
     },
     {

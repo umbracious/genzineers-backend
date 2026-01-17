@@ -18,16 +18,19 @@ export class Course extends BaseEntity {
     image?: string;
 
     @Property()
-    startDate?: Date;
+    startDate!: Date;
 
     @Property()
-    endDate?: Date;
+    endDate!: Date;
 
     @Property()
     link?: string;
 
     @Property()
-    description?: string;
+    description!: string;
+
+    @Property()
+    tutor!: string;
 
     @ManyToMany()
     users = new Collection<User>(this);

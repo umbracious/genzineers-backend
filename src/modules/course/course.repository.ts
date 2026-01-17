@@ -8,8 +8,8 @@ export class CourseRepository extends EntityRepository<Course> {
         return course;
     }
 
-    async getCourseUserRef(id: string) {
-        const course = await this.findOneOrFail({ id }, { populate: ["users:ref"]});
+    async getCourseUserRef(code: string) {
+        const course = await this.findOneOrFail({ code }, { populate: ["users:ref"]});
         return course;
     }
 
